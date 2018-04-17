@@ -104,6 +104,9 @@ class zcl_logger definition
         value(self)    type ref to zcl_logger .
     methods popup .
     methods fullscreen .
+    methods display
+      importing
+        !prof type ref to zif_logger_dsp_prof.
     methods export_to_table
       returning
         value(rt_bapiret) type bapirettab .
@@ -222,7 +225,13 @@ CLASS ZCL_LOGGER IMPLEMENTATION.
     elseif msg_type->type_kind = cl_abap_typedescr=>typekind_table.
       assign obj_to_log to <table_of_messages>.
       loop at <table_of_messages> assigning <message_line>.
-        add( <message_line> ).
+        add( obj_to_log     = <message_line>
+             context        = context
+             callback_form  = callback_form
+             callback_prog  = callback_prog
+             callback_fm    = callback_fm
+             type           = type
+             importance     = importance ).
       endloop.
       return.
     elseif msg_type->absolute_name = '\TYPE=BAPIRET2'.
@@ -296,6 +305,23 @@ CLASS ZCL_LOGGER IMPLEMENTATION.
     endif.
 
     self = me.
+  endmethod.
+
+
+  method display.
+
+    data: profile        type bal_s_prof,
+          lt_log_handles type bal_t_logh.
+
+    append me->handle TO lt_log_handles.
+
+    profile = prof->dsp_profile_get( ).
+
+    call function 'BAL_DSP_LOG_DISPLAY'
+      exporting
+        i_s_display_profile = profile
+        i_t_log_handle      = lt_log_handles.
+
   endmethod.
 
 
