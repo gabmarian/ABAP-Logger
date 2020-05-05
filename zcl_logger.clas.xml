@@ -12,6 +12,292 @@
     <UNICODE>X</UNICODE>
     <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
+   <LINES>
+    <TLINE>
+     <TDFORMAT>U1</TDFORMAT>
+     <TDLINE>&amp;FUNCTIONALITY&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Generic logger class wrapping the most important functions of the</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>Application Log.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>U1</TDFORMAT>
+     <TDLINE>&amp;RELATIONS&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>U1</TDFORMAT>
+     <TDLINE>&amp;EXAMPLE&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>UT</TDFORMAT>
+     <TDLINE>Usage</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Instantiating a new logger object</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;DATA log TYPE REF TO zcl_logger.&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;log = zcl_logger=&gt;new( ).&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Adding a message to the log</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;log-&gt;e( &apos;You see, what had happened was...&apos; ).&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Support of chainability</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;zcl_logger=&gt;new( object = &apos;foo&apos; )-&gt;e( &apos;Bad things happened: See</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>details&apos; )-&gt;e( error ).&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Get collected messages</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;DATA messages TYPE bapirettab.&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;messages = log-&gt;export_to_table( ).&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>UT</TDFORMAT>
+     <TDLINE>Logging Different Types</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>Logging current system message</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;MESSAGE e001(oo) WITH foo bar INTO dummy.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log-&gt;add( message ).&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>Loggin a BAPI return message</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;DATA message TYPE bapiret2&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log-&gt;add( message ).&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>Loggin a table of BAPI return messages</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;DATA messages TYPE bapiret2&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log-&gt;add( messages ).&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>Log an exception</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;TRY.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;    rubber_band_powered_spaceship=&gt;fly_to( the_moon )&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;  CATCH zcx_not_enough_power INTO error.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;    log-&gt;e( error ).&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;ENDTRY.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>*</TDFORMAT>
+     <TDLINE>Loggin BDC messages</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;CALL TRANSACTION &apos;CO07&apos; USING bdc_table MESSAGES INTO bdc_messages.</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>=</TDFORMAT>
+     <TDLINE>&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log-&gt;add( bdc_messages ).&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Log with context</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;DATA: context TYPE zaccount_document_log.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log-&gt;w( obj_to_log = &apos;Document created with warnings&apos; &lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;,,    context = new_document ).&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>UT</TDFORMAT>
+     <TDLINE>Combine with SBAL functions</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;DATA log_handles  TYPE bal_t_logh.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;DATA catalog_item TYPE bal_s_fcat.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;display_profile-use_grid = abap_true.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;catalog_item-col_pos = 1.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;catalog_item-ref_table = &apos;zaccount_document_log&apos;.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;catalog_item-ref_field = &apos;AC_DOC_NO&apos;.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;INSERT catalog_item INTO TABLE profile-mess_fcat.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;catalog_item-col_pos = 2.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;catalog_item-ref_table = &apos;BAL_S_SHOW&apos;.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;catalog_item-ref_field = &apos;T_MSG&apos;.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;INSERT catalog_item INTO TABLE profile-mess_fcat.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;INSERT log-&gt;handle INTO TABLE log_handles.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;CALL FUNCTION &apos;BAL_DSP_LOG_DISPLAY&apos;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;AB&gt;  i_t_log_handle = log_handles.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>U1</TDFORMAT>
+     <TDLINE>&amp;HINTS&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>U1</TDFORMAT>
+     <TDLINE>&amp;FURTHER_SOURCES_OF_INF&amp;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+    </TLINE>
+   </LINES>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_LOGGER</CLSNAME>
