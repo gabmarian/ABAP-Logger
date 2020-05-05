@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_LOGGER</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Logger</DESCRIPT>
     <STATE>1</STATE>
@@ -13,6 +12,92 @@
     <UNICODE>X</UNICODE>
     <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>A</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Writes the given object to the log as an abort message</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>ADD</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Writes the given object to the log</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>E</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Writes the given object to the log as an error message</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>EXPORT_TO_TABLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Export collection messages to BAPIRETTAB format</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>FULLSCREEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Display collected messages in full-screen</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>GET_AUTOSAVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get auto save status</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>I</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Writes the given object to the log as an information message</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>NEW</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Creates a new log object</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>OPEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Load log from the database</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>POPUP</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Display collected messages in a pop-up</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>S</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Writes the given object to the log as a success message</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>SAVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Save the log to the database</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>SET_AUTOSAVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Activate/deactivate auto save</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_LOGGER</CLSNAME>
+     <CMPNAME>W</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Writes the given object to the log as a warning message</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>
