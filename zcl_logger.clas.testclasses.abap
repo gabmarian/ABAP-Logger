@@ -369,14 +369,15 @@ CLASS lcl_test IMPLEMENTATION.
           err            TYPE REF TO cx_sy_zerodivide,
           act_txt        TYPE char255,
           exp_txt        TYPE char255,
-          msg_handle     TYPE balmsghndl.
+          msg_handle     TYPE balmsghndl,
+          long_text      TYPE string.
 
     TRY.
         impossible_int = 1 / 0. "Make an error!
       CATCH cx_sy_zerodivide INTO err.
         anon_log->add( err ).
-        exp_txt = err->if_message~get_text( ).
-        DATA(long_text) = err->if_message~get_longtext( ).
+        exp_txt = err->get_text( ).
+        long_text = err->get_longtext( ).
     ENDTRY.
 
     msg_handle-log_handle = anon_log->handle.
