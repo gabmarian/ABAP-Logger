@@ -1,6 +1,5 @@
 *"* use this source file for your ABAP unit test classes
 
-
 CLASS lcl_test DEFINITION FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
@@ -53,10 +52,13 @@ CLASS lcl_test DEFINITION FOR TESTING
 
       can_log_string FOR TESTING,
       can_log_char   FOR TESTING,
+      can_log_bapireturn FOR TESTING,
+      can_log_bapiret1 FOR TESTING,
       can_log_bapiret2 FOR TESTING,
       can_log_bapirettab FOR TESTING,
       can_log_err FOR TESTING,
       can_log_batch_msgs FOR TESTING,
+      can_log_smesg FOR TESTING,
 
       can_add_msg_context FOR TESTING,
       can_add_callback_sub FOR TESTING,
@@ -67,6 +69,9 @@ CLASS lcl_test DEFINITION FOR TESTING
       can_use_and_chain_aliases FOR TESTING.
 
 ENDCLASS.       "lcl_Test
+
+CLASS msg_formatting_error DEFINITION INHERITING FROM cx_no_check.
+ENDCLASS.
 
 CLASS lcl_test IMPLEMENTATION.
 
@@ -256,6 +261,100 @@ CLASS lcl_test IMPLEMENTATION.
       msg = 'Did not log system message properly' ).
   ENDMETHOD.
 
+  METHOD can_log_bapireturn.
+
+    DATA: bapi_msg         TYPE bapireturn,
+          msg_handle       TYPE balmsghndl,
+          expected_details TYPE bal_s_msg,
+          actual_details   TYPE bal_s_msg,
+          actual_text      TYPE char200.
+
+    expected_details-msgty = bapi_msg-type = 'W'.
+    expected_details-msgid = bapi_msg-code = 'BL'.
+    expected_details-msgno = bapi_msg-code+2 = '001'.
+    expected_details-msgv1 = bapi_msg-message_v1 = 'This'.
+    expected_details-msgv2 = bapi_msg-message_v2 = 'is'.
+    expected_details-msgv3 = bapi_msg-message_v3 = 'a'.
+    expected_details-msgv4 = bapi_msg-message_v4 = 'test'.
+
+    anon_log->add( bapi_msg ).
+
+    msg_handle-log_handle = anon_log->handle.
+    msg_handle-msgnumber = '000001'.
+
+    CALL FUNCTION 'BAL_LOG_MSG_READ'
+      EXPORTING
+        i_s_msg_handle = msg_handle
+      IMPORTING
+        e_s_msg        = actual_details
+        e_txt_msg      = actual_text.
+
+    cl_aunit_assert=>assert_not_initial(
+      act = actual_details-time_stmp
+      msg = 'Did not log bapireturn properly' ).
+
+    expected_details-msg_count = 1.
+    CLEAR actual_details-time_stmp.
+
+    cl_aunit_assert=>assert_equals(
+      exp = expected_details
+      act = actual_details
+      msg = 'Did not log bapireturn properly' ).
+
+    cl_aunit_assert=>assert_equals(
+      exp = 'This is a test'
+      act = condense( actual_text )
+      msg = 'Did not log bapireturn properly' ).
+
+  ENDMETHOD.
+
+  METHOD can_log_bapiret1.
+
+    DATA: bapi_msg         TYPE bapiret1,
+          msg_handle       TYPE balmsghndl,
+          expected_details TYPE bal_s_msg,
+          actual_details   TYPE bal_s_msg,
+          actual_text      TYPE char200.
+
+    expected_details-msgty = bapi_msg-type = 'W'.
+    expected_details-msgid = bapi_msg-id = 'BL'.
+    expected_details-msgno = bapi_msg-number = '001'.
+    expected_details-msgv1 = bapi_msg-message_v1 = 'This'.
+    expected_details-msgv2 = bapi_msg-message_v2 = 'is'.
+    expected_details-msgv3 = bapi_msg-message_v3 = 'a'.
+    expected_details-msgv4 = bapi_msg-message_v4 = 'test'.
+
+    anon_log->add( bapi_msg ).
+
+    msg_handle-log_handle = anon_log->handle.
+    msg_handle-msgnumber = '000001'.
+
+    CALL FUNCTION 'BAL_LOG_MSG_READ'
+      EXPORTING
+        i_s_msg_handle = msg_handle
+      IMPORTING
+        e_s_msg        = actual_details
+        e_txt_msg      = actual_text.
+
+    cl_aunit_assert=>assert_not_initial(
+      act = actual_details-time_stmp
+      msg = 'Did not log bapiret1 properly' ).
+
+    expected_details-msg_count = 1.
+    CLEAR actual_details-time_stmp.
+
+    cl_aunit_assert=>assert_equals(
+      exp = expected_details
+      act = actual_details
+      msg = 'Did not log bapiret1 properly' ).
+
+    cl_aunit_assert=>assert_equals(
+      exp = 'This is a test'
+      act = condense( actual_text )
+      msg = 'Did not log bapiret1 properly' ).
+
+  ENDMETHOD.
+
   METHOD can_log_bapiret2.
     DATA: bapi_msg         TYPE bapiret2,
           msg_handle       TYPE balmsghndl,
@@ -285,7 +384,7 @@ CLASS lcl_test IMPLEMENTATION.
 
     cl_aunit_assert=>assert_not_initial(
       act = actual_details-time_stmp
-      msg = 'Did not log system message properly' ).
+      msg = 'Did not log bapiret2 properly' ).
 
     expected_details-msg_count = 1.
     CLEAR actual_details-time_stmp.
@@ -293,12 +392,12 @@ CLASS lcl_test IMPLEMENTATION.
     cl_aunit_assert=>assert_equals(
       exp = expected_details
       act = actual_details
-      msg = 'Did not log system message properly' ).
+      msg = 'Did not log bapiret2 properly' ).
 
     cl_aunit_assert=>assert_equals(
       exp = 'This is a test'
       act = condense( actual_text )
-      msg = 'Did not log system message properly' ).
+      msg = 'Did not log bapiret2 properly' ).
   ENDMETHOD.
 
   METHOD can_log_bapirettab.
@@ -344,7 +443,7 @@ CLASS lcl_test IMPLEMENTATION.
 
       cl_aunit_assert=>assert_not_initial(
         act = act_detail-time_stmp
-        msg = 'Did not log system message properly' ).
+        msg = 'Did not log bapirettab properly' ).
 
       exp_detail-msg_count = 1.
       CLEAR act_detail-time_stmp.
@@ -439,6 +538,53 @@ CLASS lcl_test IMPLEMENTATION.
       exp = format_message( id = 'SABP_UNIT' no = 000 v1 = 'This' v2 = 'is' v3 = 'test' v4 = 'message' )" 'Message: This is test message'
       act = act_text
       msg = 'Did not log BDC return messages correctly' ).
+
+  ENDMETHOD.
+
+  METHOD can_log_smesg.
+
+    DATA: smesg_msg        TYPE smesg,
+          msg_handle       TYPE balmsghndl,
+          expected_details TYPE bal_s_msg,
+          actual_details   TYPE bal_s_msg,
+          actual_text      TYPE char200.
+
+    expected_details-msgty = smesg_msg-msgty = 'W'.
+    expected_details-msgid = smesg_msg-arbgb = 'BL'.
+    expected_details-msgno = smesg_msg-txtnr = '001'.
+    expected_details-msgv1 = smesg_msg-msgv1 = 'This'.
+    expected_details-msgv2 = smesg_msg-msgv2 = 'is'.
+    expected_details-msgv3 = smesg_msg-msgv3 = 'a'.
+    expected_details-msgv4 = smesg_msg-msgv4 = 'test'.
+
+    anon_log->add( smesg_msg ).
+
+    msg_handle-log_handle = anon_log->handle.
+    msg_handle-msgnumber = '000001'.
+
+    CALL FUNCTION 'BAL_LOG_MSG_READ'
+      EXPORTING
+        i_s_msg_handle = msg_handle
+      IMPORTING
+        e_s_msg        = actual_details
+        e_txt_msg      = actual_text.
+
+    cl_aunit_assert=>assert_not_initial(
+      act = actual_details-time_stmp
+      msg = 'Did not log smesg properly' ).
+
+    expected_details-msg_count = 1.
+    CLEAR actual_details-time_stmp.
+
+    cl_aunit_assert=>assert_equals(
+      exp = expected_details
+      act = actual_details
+      msg = 'Did not log bapiret1 properly' ).
+
+    cl_aunit_assert=>assert_equals(
+      exp = 'This is a test'
+      act = condense( actual_text )
+      msg = 'Did not log bapiret1 properly' ).
 
   ENDMETHOD.
 
@@ -654,9 +800,13 @@ CLASS lcl_test IMPLEMENTATION.
       IMPORTING
         msg       = msg
       EXCEPTIONS
-        not_found = 0
-        OTHERS    = 0.
-*      TODO: raise abap unit
+        not_found = 1
+        OTHERS    = 2.
+
+    IF sy-subrc <> 0.
+      RAISE EXCEPTION TYPE msg_formatting_error.
+    ENDIF.
+
   ENDMETHOD.
 
   METHOD teardown.

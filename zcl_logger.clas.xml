@@ -41,7 +41,7 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>AS</TDFORMAT>
-     <TDLINE>Instantiating a new logger object</TDLINE>
+     <TDLINE>Instantiating a logger for in-memory logging</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>AL</TDFORMAT>
@@ -52,7 +52,25 @@
      <TDLINE>&lt;EX&gt;&lt;AB&gt;log = zcl_logger=&gt;new( ).&lt;/&gt;&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Instantiating a logger with reference to an SLG0 object and</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>automatically saving log entries to the database</TDLINE>
+    </TLINE>
+    <TLINE>
      <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;DATA log TYPE REF TO zcl_logger.&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>/</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;log = zcl_logger=&gt;new( object = &apos;ZACCOUNTING_DOCUMENT&apos; auto_save</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>= abap_true ).&lt;/&gt;&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>AS</TDFORMAT>
@@ -92,6 +110,17 @@
      <TDLINE>&lt;EX&gt;&lt;AB&gt;messages = log-&gt;export_to_table( ).&lt;/&gt;&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AS</TDFORMAT>
+     <TDLINE>Display collected messages</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;EX&gt;&lt;AB&gt;log-&gt;fullscreen( ).&lt;/&gt;&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
      <TDFORMAT>UT</TDFORMAT>
      <TDLINE>Logging Different Types</TDLINE>
     </TLINE>
@@ -105,7 +134,7 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
-     <TDLINE>&lt;AB&gt;log-&gt;add( message ).&lt;/&gt;</TDLINE>
+     <TDLINE>&lt;AB&gt;log-&gt;add( ).&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>*</TDFORMAT>
@@ -116,7 +145,7 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>AL</TDFORMAT>
-     <TDLINE>&lt;AB&gt;DATA message TYPE bapiret2&lt;/&gt;</TDLINE>
+     <TDLINE>&lt;AB&gt;DATA message TYPE bapiret2.&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
@@ -131,7 +160,7 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>AL</TDFORMAT>
-     <TDLINE>&lt;AB&gt;DATA messages TYPE bapiret2&lt;/&gt;</TDLINE>
+     <TDLINE>&lt;AB&gt;DATA messages TYPE STANDARD TABLE OF bapiret2.&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
@@ -150,7 +179,7 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
-     <TDLINE>&lt;AB&gt;    rubber_band_powered_spaceship=&gt;fly_to( the_moon )&lt;/&gt;</TDLINE>
+     <TDLINE>&lt;AB&gt;    rubber_band_powered_spaceship-&gt;fly_to( the_moon ).&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
@@ -192,19 +221,39 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>AL</TDFORMAT>
-     <TDLINE>&lt;AB&gt;DATA: context TYPE zaccount_document_log.&lt;/&gt;</TDLINE>
+     <TDLINE>&lt;AB&gt;DATA log_context TYPE zaccounting_document_log_ctx.&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
-     <TDLINE>&lt;AB&gt;log-&gt;w( obj_to_log = &apos;Document created with warnings&apos; &lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
-     <TDFORMAT>/</TDFORMAT>
-     <TDLINE>&lt;AB&gt;,,    context = new_document ).&lt;/&gt;</TDLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log_context-ac_doc_no = acc_document-&gt;ac_doc_no.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log_context-doc_type = acc_document-&gt;doc_type.&lt;/&gt;</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;log-&gt;w( obj_to_log = &apos;Document created with warnings&apos; context =</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDLINE>log_context ).&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>UT</TDFORMAT>
      <TDLINE>Combine with SBAL functions</TDLINE>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+    </TLINE>
+    <TLINE>
+     <TDFORMAT>AL</TDFORMAT>
+     <TDLINE>&lt;AB&gt;* Display log with context information&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>AL</TDFORMAT>
@@ -233,7 +282,7 @@
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>
-     <TDLINE>&lt;AB&gt;catalog_item-ref_table = &apos;zaccount_document_log&apos;.&lt;/&gt;</TDLINE>
+     <TDLINE>&lt;AB&gt;catalog_item-ref_table = &apos;ZACCOUNTING_DOCUMENT_LOG_CTX&apos;.&lt;/&gt;</TDLINE>
     </TLINE>
     <TLINE>
      <TDFORMAT>/</TDFORMAT>

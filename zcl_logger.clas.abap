@@ -29,7 +29,7 @@ public section.
   class-methods OPEN
     importing
       !OBJECT type CSEQUENCE
-      !SUBOBJECT type CSEQUENCE
+      !SUBOBJECT type CSEQUENCE optional
       !DESC type CSEQUENCE optional
       !CREATE_IF_DOES_NOT_EXIST type ABAP_BOOL default ABAP_FALSE
       !AUTO_SAVE type ABAP_BOOL optional
@@ -173,8 +173,11 @@ CLASS ZCL_LOGGER IMPLEMENTATION.
 
     FIELD-SYMBOLS: <table_of_messages> TYPE ANY TABLE,
                    <message_line>      TYPE any,
-                   <bapi_msg>          TYPE bapiret2,
+                   <bapi_msg>          TYPE bapireturn,
+                   <bapi1_msg>         TYPE bapiret1,
+                   <bapi2_msg>         TYPE bapiret2,
                    <bdc_msg>           TYPE bdcmsgcoll,
+                   <smesg_msg>         TYPE smesg,
                    <hrpad_msg>         TYPE hrpad_message_alike,
                    <context_val>       TYPE any.
 
@@ -232,10 +235,28 @@ CLASS ZCL_LOGGER IMPLEMENTATION.
       ENDLOOP.
       RETURN.
     ELSEIF msg_type->absolute_name = '\TYPE=BAPIRET2'.
+      ASSIGN obj_to_log TO <bapi2_msg>.
+      detailed_msg-msgty = <bapi2_msg>-type.
+      detailed_msg-msgid = <bapi2_msg>-id.
+      detailed_msg-msgno = <bapi2_msg>-number.
+      detailed_msg-msgv1 = <bapi2_msg>-message_v1.
+      detailed_msg-msgv2 = <bapi2_msg>-message_v2.
+      detailed_msg-msgv3 = <bapi2_msg>-message_v3.
+      detailed_msg-msgv4 = <bapi2_msg>-message_v4.
+    ELSEIF msg_type->absolute_name = '\TYPE=BAPIRET1'.
+      ASSIGN obj_to_log TO <bapi1_msg>.
+      detailed_msg-msgty = <bapi1_msg>-type.
+      detailed_msg-msgid = <bapi1_msg>-id.
+      detailed_msg-msgno = <bapi1_msg>-number.
+      detailed_msg-msgv1 = <bapi1_msg>-message_v1.
+      detailed_msg-msgv2 = <bapi1_msg>-message_v2.
+      detailed_msg-msgv3 = <bapi1_msg>-message_v3.
+      detailed_msg-msgv4 = <bapi1_msg>-message_v4.
+    ELSEIF msg_type->absolute_name = '\TYPE=BAPIRETURN'.
       ASSIGN obj_to_log TO <bapi_msg>.
       detailed_msg-msgty = <bapi_msg>-type.
-      detailed_msg-msgid = <bapi_msg>-id.
-      detailed_msg-msgno = <bapi_msg>-number.
+      detailed_msg-msgid = <bapi_msg>-code+0(2).
+      detailed_msg-msgno = <bapi_msg>-code+2(3).
       detailed_msg-msgv1 = <bapi_msg>-message_v1.
       detailed_msg-msgv2 = <bapi_msg>-message_v2.
       detailed_msg-msgv3 = <bapi_msg>-message_v3.
@@ -249,6 +270,15 @@ CLASS ZCL_LOGGER IMPLEMENTATION.
       detailed_msg-msgv2 = <bdc_msg>-msgv2.
       detailed_msg-msgv3 = <bdc_msg>-msgv3.
       detailed_msg-msgv4 = <bdc_msg>-msgv4.
+    ELSEIF msg_type->absolute_name = '\TYPE=SMESG'.
+      ASSIGN obj_to_log TO <smesg_msg>.
+      detailed_msg-msgty = <smesg_msg>-msgty.
+      detailed_msg-msgid = <smesg_msg>-arbgb.
+      detailed_msg-msgno = <smesg_msg>-txtnr.
+      detailed_msg-msgv1 = <smesg_msg>-msgv1.
+      detailed_msg-msgv2 = <smesg_msg>-msgv2.
+      detailed_msg-msgv3 = <smesg_msg>-msgv3.
+      detailed_msg-msgv4 = <smesg_msg>-msgv4.
     ELSEIF msg_type->absolute_name = '\TYPE=HRPAD_MESSAGE'.
       ASSIGN obj_to_log TO <hrpad_msg>.
       detailed_msg-msgty = <hrpad_msg>-msgty.
